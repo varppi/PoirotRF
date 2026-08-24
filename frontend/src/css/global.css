@@ -1,0 +1,47 @@
+
+@import "tailwindcss";
+
+:root {
+    --primary: rgb(255,0,0);
+    --secondary: rgb(125,125,125);
+    --success: rgb(42, 167, 42);
+    --warning: rgb(255, 123, 0);
+
+    --trans-primary: rgba(255,0,0,0.4);
+    
+    --link: rgb(0,0,255);
+    --bg: rgb(255,255,255);
+}
+
+html,body {
+    background-color: var(--bg);
+}
+
+button,p,sub,h1,h2,h3,h4,h5,h6,a,div {
+    z-index: 100;
+}
+
+.o-file-input {
+    border-bottom: 2px solid var(--primary);
+    padding: 5px;
+    font-weight: 900;
+    
+}
+
+.o-button {
+    transition: 0.1s;
+    background-color: var(--primary);
+    color: var(--bg);
+    font-weight: 900;
+    box-shadow: 3px 3px var(--trans-primary);
+}
+
+.o-button:hover {
+    filter: brightness(0.95);
+    box-shadow: 5px 5px var(--trans-primary);
+}
+
+.o-big-text {
+    font-size: calc(17px + 0.2vw);
+    font-weight: 700;
+}
