@@ -8,6 +8,7 @@ import PhaseWindow from "../components/Editor/Windows/PhaseWindow";
 import AudioWindow from "../components/Editor/Windows/AudioWindow";
 import WaterfallWindow from "../components/Editor/Windows/WaterfallWindow";
 import Background2 from "../components/Background2";
+import FilesWindow from "../components/Editor/Windows/FilesWindow";
 
 export default function Editor() {
     document.getElementsByTagName("html")[0].style.overflowY="hidden";
@@ -21,7 +22,8 @@ export default function Editor() {
         "constellation": <ConstellationWindow/>,
         "phase": <PhaseWindow/>,
         "audio": <AudioWindow/>,
-        "waterfall": <WaterfallWindow/>
+        "waterfall": <WaterfallWindow/>,
+        "files": <FilesWindow/>
     }
 
     /// Adds the window along with a unique ID tied to the window to spawnedWindows

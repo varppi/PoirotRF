@@ -2,8 +2,9 @@ import type React from "react";
 import { GetData, UploadFile } from "../../../Actions/Input";
 import { useEffect, useState } from "react";
 import Message from "../../Message";
-import { GetGlobalSignalData, GetMeta, SetData, SetMeta } from "../../../Global";
+import { AddListener, GetGlobalSignalData, GetMeta, SetData, SetMeta } from "../../../Global";
 import { SignalData } from "../../../Actions/SignalData";
+import { type Meta } from "../../../Actions/Meta";
 
 export default function InputWindow() {
     const [message, setMessage] = useState<{text: string|null, color: string}>({text:null, color:""});
@@ -45,6 +46,15 @@ export default function InputWindow() {
         setTimeout(()=>setMessage({text: null, color: ""}), 5000);
     }
 
+    async function handleNewData (data: SignalData|null, meta: Meta|null) {
+        if (!data) return;
+        setMaxStop(data.FullSize);
+        setStart(data.Start);
+        setSize(data.Stop-data.Start);
+        setExpression(data.Expression);
+    }
+    
+
     useEffect(()=>{
         (async ()=>{
             const id = GetMeta()?.ID as string ?? "";
@@ -72,8 +82,16 @@ export default function InputWindow() {
     }, [autoplayTap])
 
     useEffect(()=>{
+        (async()=>{
+            AddListener(handleNewData);
+            handleNewData(GetGlobalSignalData(), GetMeta());
+        })()
+    }, []);
+
+    useEffect(()=>{
         setAutoplayTap(!autoplayTap)
     }, [autoplay])
+    
 
     return (
         <form className="m-2 flex flex-col gap-2">

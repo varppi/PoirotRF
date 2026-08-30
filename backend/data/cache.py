@@ -13,6 +13,9 @@ class CACHE:
         id = str(uuid.uuid4())
         self.uploadMap[id] = rawData
         return id
+    
+    def ListFiles(self):
+        return list(self.uploadMap.keys())
 
     def GetData(self, id):
         return self.uploadMap[id]

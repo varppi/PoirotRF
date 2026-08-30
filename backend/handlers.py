@@ -1,6 +1,9 @@
 import numpy as np
 import base64
 import os
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+
 from flask_init import APP
 from flask import request, jsonify, send_file, send_from_directory
 from data.cache import CACHE
@@ -8,6 +11,7 @@ from data.signal_data import SIGNAL_DATA
 from dsp.waterfall import GENERATE_WATERFALL
 from dsp.parsers import AUTO_PARSER
 from dsp.expressions import RUN_EXPRESSION
+from dsp.iqheat import GENERATE_IQ_HEATMAP
 from io import BytesIO
 from scipy.io.wavfile import write
 
@@ -21,6 +25,11 @@ class Handlers:
         @APP.route("/api/ping", methods=["GET"])
         def ping():
             return "pong"
+        
+        @APP.route("/api/files", methods=["GET"])
+        def get_files():
+            ids = self.dataCache.ListFiles()
+            return jsonify({"ids": ids})
 
         @APP.route("/api/upload", methods=["POST"])
         def upload():
@@ -95,6 +104,45 @@ class Handlers:
 
             image = GENERATE_WATERFALL(cropped_signal, sr, contrast)
             return send_file(image, mimetype="image/png", as_attachment=False)
+        
+        
+        @APP.route("/api/upload/<id>/<start>/<end>/iqheat", methods=["GET"])
+        def get_signal_heatmap(id, start, end):
+            start,end = int(start), int(end)
+            data = self.dataCache.GetData(id)
+            (sample_rate, signal) = AUTO_PARSER(data)
+            cropped_signal = signal[start:end]
+
+            fig = Figure()
+            ax = fig.add_subplot(111)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_position([0, 0, 1, 1])
+            data = GENERATE_IQ_HEATMAP(cropped_signal)
+            ax.imshow(data, cmap='viridis')
+
+            buffer = BytesIO()
+            fig.savefig(buffer, format="png", bbox_inches='tight')
+            buffer.seek(0)
+            return send_file(buffer, mimetype="image/png", as_attachment=False)
+        
+        @APP.route("/api/upload/<id>/iqheat", methods=["GET"])
+        def get_full_signal_heatmap(id):
+            data = self.dataCache.GetData(id)
+            (sample_rate, signal) = AUTO_PARSER(data)
+
+            fig = Figure()
+            ax = fig.add_subplot(111)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_position([0, 0, 1, 1])
+            data = GENERATE_IQ_HEATMAP(signal)
+            ax.imshow(data, cmap='viridis')
+
+            buffer = BytesIO()
+            fig.savefig(buffer, format="png", bbox_inches='tight')
+            buffer.seek(0)
+            return send_file(buffer, mimetype="image/png", as_attachment=False)
 
         @APP.route('/', defaults={'path': ''})
         @APP.route('/<path:path>')

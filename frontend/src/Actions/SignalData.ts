@@ -5,6 +5,7 @@ export class SignalData {
     Start: number;
     Stop: number;
     FullSize: number;
+    Expression: string;
 
     constructor(
         fft: number[], 
@@ -13,6 +14,7 @@ export class SignalData {
         start: number,
         stop: number,
         fullSize: number,
+        expression: string,
     ) {
         this.FFT = fft;
         this.Real = real;
@@ -20,5 +22,6 @@ export class SignalData {
         this.Start = start;
         this.Stop = stop;
         this.FullSize = fullSize;
+        this.Expression = expression;
     }
 }

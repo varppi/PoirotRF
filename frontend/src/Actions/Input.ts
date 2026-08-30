@@ -45,5 +45,5 @@ export async function GetData(
     const start = parseInt(response.data["start"]);
     const stop = parseInt(response.data["stop"]);
     const fullSize = parseInt(response.data["fullSize"])
-    return new SignalData(fft, real, imaginary, start, stop, fullSize);
+    return new SignalData(fft, real, imaginary, start, stop, fullSize, expression);
 }
