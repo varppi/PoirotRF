@@ -83,10 +83,16 @@ export default function InputWindow() {
 
     useEffect(()=>{
         (async()=>{
-            AddListener(handleNewData);
             handleNewData(GetGlobalSignalData(), GetMeta());
         })()
     }, []);
+
+    // useEffect(()=>{
+    //     (async()=>{
+    //         AddListener(handleNewData);
+    //         handleNewData(GetGlobalSignalData(), GetMeta());
+    //     })()
+    // }, []);
 
     useEffect(()=>{
         setAutoplayTap(!autoplayTap)

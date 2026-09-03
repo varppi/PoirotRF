@@ -34,7 +34,7 @@ export default function FilesWindow() {
             setMessage({text: "could not list files", color: "danger"});
             return;
         }
-        setFiles(resp);
+        setFiles(resp.reverse());
     }
 
     useEffect(()=>{
@@ -47,20 +47,20 @@ export default function FilesWindow() {
 
     return (
         <div className="p-2 text-nowrap max-h-[500px]">
+            <p className="mb-[-10px] uppercase opacity-[.5]">latest&gt;</p>
             <div className="flex flex-col w-full gap-2 overflow-y-scroll">
-                {files.reverse().map(fileID => <div className="border-b py-2 border-[var(--primary)]">
+                {files.map(fileID => <div className="border-b py-2 border-[var(--primary)]">
                     <div className="flex items-center gap-3 justify-between">
+                        <div className="flex flex-col w-[25] my-2 gap-1 items-center">
+                            <img src={`/api/upload/${fileID}/iqheat`} className="max-h-[100px] max-w-[100px]"></img>
+                            <sub>I/Q heatmap</sub>
+                        </div>
                         <p className="font-mono text-xl">{fileID}</p>
                         <button className="o-button p-1 px-3" onClick={()=>loadFile(fileID)}>Load File</button>
                     </div>
-                    <div className="flex py-1">
-                        <img src={`/api/upload/${fileID}/iqheat`} className="max-h-[100px] max-w-[19.99%]"></img>
-                        {/* {[...new Array(5)].map((_,i) => 
-                            <img src={`/api/upload/${fileID}/iqheat`} className="max-h-[100px] max-w-[19.99%]"></img>
-                        )} */}
-                    </div>
                 </div>)}
             </div>
+            <p className="mb-[-10px] uppercase opacity-[.5]">&lt;oldest</p>
             <Message text={message.text} color={message.color}/>
         </div>
     )

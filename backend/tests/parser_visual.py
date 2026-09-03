@@ -1,13 +1,14 @@
 import sys 
 sys.path.append("..")
-
 import numpy as np
 from dsp.parsers import AUTO_PARSER
 from data.cache import CACHE
 from data.signal_data import SIGNAL_DATA
 import base64
+import os
 
-data = base64.b64encode(open("../../../../../Downloads/bpsk.wav", "rb").read())
+testDataPath = os.path.expanduser("~") + "\\Downloads\\bpsk.wav"
+data = base64.b64encode(open(testDataPath, "rb").read())
 cache = CACHE()
 id = cache.UploadFile(data)
 bytes = cache.GetData(id)

@@ -16,7 +16,7 @@ def PARSE_NUMPYI64(bytes: bytes):
 def AUTO_PARSER(bytes: bytes):
     sample_rate = 0
     signal = np.array([])
-    parsers = [PARSE_WAV, PARSE_NUMPYI64]
+    parsers = [PARSE_NUMPYI64, PARSE_WAV]
     for parser in parsers:
         try:
             (sample_rate, signal) = parser(bytes)
